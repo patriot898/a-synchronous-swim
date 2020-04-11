@@ -4,11 +4,57 @@
 
   //
   // TODO: build the swim command fetcher here
-  //
+  //client should fetch every 100ms or so
+  //it will receive an array of directions
+  //and it needs to call swimTeam.move() on all the directions in the data array that was sent in response to the get request
+  //if they are valid directions (already checked upon receipt of direction)
+  //starting from index 0 to the end
+
+  //what format will I get the data in? we want an array
+  // const fetch = (callback = () => {}) => {
+  //   $.ajax({
+  //     type: 'GET',
+  //     url: serverUrl,
+  //     //data: [], //added this, will probably need to fix
+  //     //contentType: 'application/json', //FIX THIS AS WELL
+  //     success: (data) => {
+  //       //call swimTeam.move() on all the directions in the data array that was sent in response to the get request
+  //       // SwimTeam.move(data) //swimteam.js
+  //       callback(data);
+  //       console.log(data);
+  //       console.log('success');
+
+  //     },
+  //     error: (status) => {
+  //       console.error('swimTeam: Failed to fetch messages', status);
+  //     }
+  //   });
+  // }
+
+
+  const fetch  = ()  => {
+    $.ajax({
+      type: 'GET',
+      url: serverUrl,
+      //data: [], //added this, will probably need to fix
+      //contentType: 'text',
+      success: (data) => {
+        //call swimTeam.move() on all the directions in the data array that was sent in response to the get request
+        SwimTeam.move(data) //swimteam.js
+        console.log(data);
+        console.log('success');
+      },
+      error: (status) => {
+        console.error('swimTeam: Failed to fetch messages', status);
+      }
+    });
+  }
+
 
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!
   // Note: remember to fix the URL below.
+  //this is for storing the image file in the server
   /////////////////////////////////////////////////////////////////////
 
   const ajaxFileUplaod = (file) => {
@@ -17,7 +63,7 @@
     $.ajax({
       type: 'POST',
       data: formData,
-      url: 'FILL_ME_IN',
+      url: serverUrl,
       cache: false,
       contentType: false,
       processData: false,
@@ -46,4 +92,13 @@
     ajaxFileUplaod(file);
   });
 
+  setInterval(fetch, 250);
+
+  //initialize fetching here using setInterval
+  //the callback function should call swimTeam.move() on every direction in the messages array returned from the get request
+
 })();
+
+//why is this file just a function just wrapped in parenthesis? -- means it will be executed immediately
+//does this file need to be included in index.html? -- yes
+//
