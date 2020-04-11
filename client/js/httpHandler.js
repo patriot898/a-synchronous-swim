@@ -32,10 +32,10 @@
   // }
 
 
-  const fetch  = ()  => {
+  const fetchSwimCommands  = ()  => {
     $.ajax({
       type: 'GET',
-      url: serverUrl,
+      url: serverUrl, //+ '/background.jpg',
       //data: [], //added this, will probably need to fix
       //contentType: 'text',
       success: (data) => {
@@ -43,12 +43,35 @@
         SwimTeam.move(data) //swimteam.js
         console.log(data);
         console.log('success');
+        fetchSwimCommands();
       },
       error: (status) => {
-        console.error('swimTeam: Failed to fetch messages', status);
+      console.error('swimTeam: Failed to fetch messages', status);
+      fetchSwimCommands();
       }
     });
   }
+
+  const fetchBackgroundImage  = ()  => {
+    $.ajax({
+      type: 'GET',
+      url: serverUrl + '/background.jpg',
+      //data: [], //added this, will probably need to fix
+      //contentType: 'text',
+      success: (data) => {
+        console.log(data);
+        console.log('success');
+        //write it to a file in the client's main directory
+        //update the background to that image
+      },
+      error: (status) => {
+      console.error('swimTeam: Failed to fetch background image', status);
+
+      }
+    });
+  }
+
+
 
 
   /////////////////////////////////////////////////////////////////////
@@ -92,7 +115,8 @@
     ajaxFileUplaod(file);
   });
 
-  setInterval(fetch, 250);
+  //fetchSwimCommands();
+  fetchBackgroundImage();
 
   //initialize fetching here using setInterval
   //the callback function should call swimTeam.move() on every direction in the messages array returned from the get request
